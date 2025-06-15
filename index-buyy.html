@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KHULZ STORE - Digital Creator & Toko Online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #0a0f2b;
+            --secondary: #121a3f;
+            --accent: #00a3ff;
+            --accent-light: #00c3ff;
+            --text: #ffffff;
+            --text-secondary: #a0aec0;
+            --card-bg: rgba(16, 23, 56, 0.7);
+            --card-border: rgba(0, 163, 255, 0.3);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Video Background */
+        #video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 15, 43, 0.9) 0%, rgba(18, 26, 63, 0.7) 100%);
+            z-index: -1;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 25px rgba(0, 163, 255, 0.4);
+            margin-bottom: 1.5rem;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(0, 163, 255, 0.7);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-name {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .verified {
+            color: var(--accent);
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 5px rgba(0, 163, 255, 0.6));
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            max-width: 700px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 1rem;
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        .tagline::before, .tagline::after {
+            content: '"';
+            font-size: 2rem;
+            color: var(--accent);
+            opacity: 0.7;
+        }
+
+        /* Social Links */
+        .social-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem 0;
+            animation: slideUp 1s ease-out;
+        }
+
+        .social-title {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-light);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .social-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent), transparent);
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .social-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .social-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 163, 255, 0.3);
+            border-color: var(--accent);
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: var(--secondary);
+            flex-shrink: 0;
+        }
+
+        .social-content {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .social-name {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            font-size: 1.1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .social-handle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* WhatsApp specific styles */
+        .social-card.whatsapp .social-icon {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white;
+        }
+
+        .social-card.tiktok .social-icon {
+            background: linear-gradient(135deg, #69c9d0, #ee1d52);
+            color: white;
+        }
+
+        .social-card.instagram .social-icon {
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            color: white;
+        }
+
+        .social-card.youtube .social-icon {
+            background: linear-gradient(135deg, #ff0000, #e52d27);
+            color: white;
+        }
+
+        .social-card.channel .social-icon {
+            background: linear-gradient(135deg, #0a0f2b, #00a3ff);
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            padding: 2rem 0;
+            text-align: center;
+            width: 100%;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .location i {
+            color: var(--accent);
+        }
+
+        .copyright {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .brand-name {
+                font-size: 2.5rem;
+            }
+            
+            .verified {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1.1rem;
+            }
+            
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .brand-name {
+                font-size: 2rem;
+            }
+            
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .social-card {
+                padding: 1rem;
+            }
+        }
+
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #0a0f2b;
+                --secondary: #121a3f;
+                --text: #ffffff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <video id="video-bg" autoplay muted loop>
+        <source src="https://cdn.pixabay.com/vimeo/849590113/abstract-176025.mp4?width=1280&hash=0d7a4f7b1a1c3cbcb5d3d1c4f7d7b7b7b7b7b7b7" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <div class="overlay"></div>
+    
+    <div class="container">
+        <div class="header">
+            <img src="https://i.supa.codes/Th31UW" alt="KHULZ STORE Logo" class="logo" onerror="this.src='https://via.placeholder.com/120/0a0f2b/00a3ff?text=KS'">
+            <div class="brand">
+                <h1 class="brand-name">KHULZ STORE</h1>
+                <i class="fas fa-check-circle verified"></i>
+            </div>
+            <p class="tagline">Prestasi tidak menentukan mu sukses, Tapi sukses ditentukan oleh caramu berproses.</p>
+        </div>
+        
+        <div class="social-container">
+            <h2 class="social-title">Hubungi Kami</h2>
+            <div class="social-grid">
+                <a href="https://www.tiktok.com/@khulzxd?_t=ZS-8xCJcwMosZb&_r=1" target="_blank" class="social-card tiktok">
+                    <div class="social-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <div class="social-content">
+                        <div class="social-name">TikTok</div>
+                        <div class="social-handle">@khulzxd</div>
+                    </div>
+                </a>
+                
+                <a href="https://www.instagram.com/khulz_store665?igsh=YzljYTk1ODg3Zg==" target="_blank" class="social-card instagram">
+                    <div class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="social-content">
+                        <div class="social-name">Instagram</div>
+                        <div class="social-handle">@khulz_store665</div>
+                    </div>
+                </a>
+                
+                <a href="https://youtube.com/@khulzshop?si=U5CbXRn5FVjkRrG_" target="_blank" class="social-card youtube">
+                    <div class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <div class="social-content">
+                        <div class="social-name">YouTube</div>
+                        <div class="social-handle">@khulzshop</div>
+                    </div>
+                </a>
+                
+                <a href="https://wa.me/62895334870706" target="_blank" class="social-card whatsapp">
+                    <div class="social-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="social-content">
+                        <div class="social-name">WhatsApp Utama</div>
+                        <div class="social-handle">+62 895-3348-70706</div>
+                    </div>
+                </a>
+                
+                <a href="https://chat.whatsapp.com/Kc0yBPLQgNeCg4NE4Zk6SG" target="_blank" class="social-card whatsapp">
+                    <div class="social-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="social-content">
+                        <div class="social-name">Grup WhatsApp JB</div>
+                        <div class="social-handle">Khulz Store</div>
+                    </div>
+                </a>
+                
+                <a href="https://chat.whatsapp.com/KHCjiyRbr7mGLminxSMS13" target="_blank" class="social-card whatsapp">
+                    <div class="social-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="social-content">
+                        <div class="social-name">Grup App Premium</div>
+                        <div class="social-handle">Khulz Store</div>
+                    </div>
+                </a>
+                
+                <a href="https://whatsapp.com/channel/0029Vb07KdZAojYxpLcOSX3o" target="_blank" class="social-card channel">
+                    <div class="social-icon">
+                        <i class="fas fa-broadcast-tower"></i>
+                    </div>
+                    <div class="social-content">
+                        <div class="social-name">Saluran WhatsApp</div>
+                        <div class="social-handle">Khulz Store Updates</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Jawa Timur, Bojonegoro, Indonesia</span>
+            </div>
+            <div class="copyright">
+                &copy; 2023 KHULZ STORE - Digital Creator & Online Store
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Background video handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoBg = document.getElementById('video-bg');
+            
+            // Fallback jika video gagal dimuat
+            videoBg.addEventListener('error', function() {
+                this.parentNode.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+                this.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
